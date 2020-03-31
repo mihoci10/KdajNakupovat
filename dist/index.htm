@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-white antialiased"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="apple-touch-icon" sizes="180x180" href="index_files/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="index_files/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="index_files/icons/favicon.ico">
+<title>COVID-19 SAMOPOROČANJE</title>
+<meta name="description" content="Neodvisna stran za zbiranje in prikazovanje podatkov o okužbi Covid-19 v Sloveniji">
+<meta name="keywords" content="covid-19, simptomi, poročanje, statistika">
+<meta name="author" content="Tomaž Gregorič">
+<meta name="theme-color" content="#ffffff">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Anonimno poročaj o svojem počutju, spremljaj zbrane podatke in sprejemaj dobre odločitve!">
+<meta name="twitter:description" content="Neodvisna stran za zbiranje in prikazovanje podatkov o okužbi Covid-19 v Sloveniji">
+<meta name="twitter:image" content="https://covid-19-stats.si/index_files/korona.png">
+<meta name="twitter:image:alt" content="COVID-19 SAMOPOROČANJE">
+<meta name="twitter:creator" content="Tomaž Gregorič">
+<meta property="og:url" content="https://covid-19-stats.si/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="COVID-19 SAMOPOROČANJE">
+<meta property="og:title" content="Anonimno poročaj o svojem počutju, spremljaj zbrane podatke in sprejemaj dobre odločitve!">
+<meta property="og:description" content="Neodvisna stran za zbiranje in prikazovanje podatkov o okužbi Covid-19 v Sloveniji">
+<meta property="og:image" content="https://covid-19-stats.si/index_files/korona.png">
+<style class="anchorjs"></style><link rel="stylesheet" href="./index_files/inter.css">
+<link rel="stylesheet" href="./index_files/circle.css">
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5e787b3d4518d30012a3f7f7&product=inline-share-buttons" async="async"></script>
+<script src="js/covid.php"></script>
+<script src="apexcharts/dist/apexcharts.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/forge/0.8.2/forge.all.min.js"></script>
+<!-- MAP INCLUDE -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet">
+<!-- MAP INCLUDE -->
+</head>
+<body data-sidebar-visible="true" class="text-gray-900 leading-normal" data-gr-c-s-loaded="true" onload="covid()">
+
+<div>
+  <div id="header">
+    <div class="bg-gray-100 pt-24 lg:pt-0">
+      <div class="fixed z-50 bg-gray-100 inset-x-0 top-0 border-b-2 border-gray-200 lg:border-b-0 lg:static flex items-center">
+        <div class="w-full max-w-screen-xl relative mx-auto px-6">
+          <div class="lg:border-b-2 lg:border-gray-200 h-24 flex flex-col justify-center">
+            <div class="flex items-center -mx-6">
+              
+              <div class="lg:w-1/4 xl:w-1/5 pl-6 pr-6">
+                <div class="flex items-center">
+                  <a href="" class="block">
+                    <img src="index_files/icons/corona-icon.png" width="64px">
+                  </a>
+                </div>
+              </div>
+
+              <div class="flex flex-grow lg:w-3/4 xl:w-4/5">
+                <div class="w-full lg:px-6 lg:w-3/4 xl:px-12 text-center">
+                  <div class="relative">
+                    <span class="font-mono text-2xl font-bold">COVID-19<br>SAMOPOROČANJE</span>
+                  </div>
+                </div>
+               
+                <div class="hidden lg:flex lg:items-center lg:justify-between xl:w-1/4 px-6">
+                  <div class="flex justify-start items-center text-gray-500">
+                    <div class="sharethis-inline-share-buttons"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="w-full max-w-screen-xl relative mx-auto px-6 pt-16 pb-40 md:pb-24">
+        <div class="xl:flex -mx-6" style="padding-bottom:150px;">
+          <div class="px-6 text-left md:text-center xl:text-left max-w-2xl md:max-w-3xl mx-auto">
+            <div id="feedback"></div>
+			<div id="naslov">
+				<h1 class="text-3xl sm:text-4xl md:text-5xl xl:text-4xl font-light leading-tight">
+				  <!-- Analiza širjenja okužbe SARS-CoV-2 (COVID-19) med državljani -->
+				  <span class="sm:block text-teal-500 font-normal">
+					Dobrodošli na neodvisni strani za zbiranje in prikazovanje podatkov o okužbi Covid-19 v Sloveniji.
+				  </span>
+				</h1>
+				<p class="mt-6 leading-relaxed sm:text-lg md:text-xl xl:text-lg text-gray-600">
+				  Anonimno poročaj o svojem počutju, spremljaj zbrane podatke in sprejemaj dobre odločitve.
+        </p>
+        <p class="mt-6 text-lg md:text-xl text-gray-600 font-bold">
+          Zbrali smo že: 
+          <span class="font-medium">
+            100.000 / 200.000
+          </span> 
+        </p>
+			</div class="flex">	
+            <div class="w-full lg:w-3/5 mt-6">
+              <a href="#simptomislike" class="rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-teal-500 hover:bg-teal-600 md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md">Oddaj podatke</a>
+              <a href="#statistika" class="ml-4 rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-white hover:bg-gray-200 md:text-lg xl:text-base text-gray-800 font-semibold leading-tight shadow-md">Statistika</a>
+            </div>
+          </div>
+          <div class="w-full lg:w-2/5 mt-12 xl:mt-6 px-6">
+            <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/q7GY3RsFs4s" frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-center bg-repeat-x -mb-8 md:hidden" style="height: 142.5px; margin-top: -142.5px; background-size: 3241.5px 142.5px; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox=&#39;0 0 4322 190&#39; fill=&#39;none&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39;%3E%3Cpath fill=&#39;%23F7FAFC&#39; d=&#39;M1 0h4320v190H1z&#39; /%3E%3Cpath d=&#39;M1441 190H1V95s202.817-45 360-45 360 45 360 45 202.817 45 360 45c157.18 0 360-45 360-45v95z&#39; fill=&#39;%23fff&#39; /%3E%3Cpath d=&#39;M721 95c-.217.976-.216.976-.214.977l.007.001.028.007.111.024.441.097c.389.085.969.212 1.732.377 1.525.33 3.783.814 6.711 1.43 5.857 1.23 14.398 2.989 25.137 5.099a2518.171 2518.171 0 0 0 86.945 15.475C912.268 129.74 1002.33 141 1081 141v-2c-78.51 0-168.451-11.24-238.786-22.487a2518.276 2518.276 0 0 1-86.875-15.463 1956.06 1956.06 0 0 1-25.111-5.095 1180.206 1180.206 0 0 1-8.427-1.803l-.438-.096-.11-.024-.027-.006-.007-.002c-.002 0-.002 0-.219.976zm360 46c78.67 0 168.73-11.26 239.1-22.513a2519.232 2519.232 0 0 0 86.95-15.475c10.74-2.11 19.28-3.868 25.13-5.1 2.93-.615 5.19-1.1 6.72-1.43.76-.164 1.34-.29 1.73-.376.19-.043.34-.075.44-.097.05-.01.08-.019.11-.024a.228.228 0 0 1 .03-.007v-.001c.01 0 .01 0-.21-.977l-.22-.976-.01.002-.02.006c-.03.005-.06.013-.11.024l-.44.096-1.73.376c-1.52.33-3.77.812-6.7 1.427-5.85 1.23-14.38 2.987-25.11 5.095-21.46 4.217-51.71 9.84-86.87 15.463C1249.45 127.76 1159.51 139 1081 139v2zM1 95c.217.976.217.976.219.976a.12.12 0 0 1 .007-.002l.027-.006.11-.024.438-.096 1.726-.376c1.523-.33 3.776-.812 6.7-1.427A1958.54 1958.54 0 0 1 35.34 88.95a2517.83 2517.83 0 0 1 86.875-15.463C192.549 62.24 282.488 51 361 51v-2c-78.671 0-168.732 11.26-239.102 22.513a2520.39 2520.39 0 0 0-86.945 15.474 1960.08 1960.08 0 0 0-25.137 5.1 1190.357 1190.357 0 0 0-8.884 1.904l-.111.024-.028.007-.007.001c-.002 0-.003 0 .214.977zm360-44c78.512 0 168.451 11.24 238.786 22.487a2517.73 2517.73 0 0 1 86.875 15.463 1956.06 1956.06 0 0 1 25.111 5.095 1180.206 1180.206 0 0 1 8.427 1.803l.438.096.11.024.027.006.007.002c.002 0 .002 0 .219-.976s.216-.976.214-.977l-.007-.001-.028-.007a52.997 52.997 0 0 1-.111-.024l-.441-.097c-.389-.085-.969-.212-1.732-.377-1.525-.33-3.783-.814-6.711-1.43a1963.63 1963.63 0 0 0-25.137-5.1 2520.12 2520.12 0 0 0-86.945-15.474C529.732 60.26 439.671 49 361 49v2z&#39; fill=&#39;%23EDF2F7&#39; /%3E%3Cpath d=&#39;M721 95c-.11.994-.109.994-.108.994h.007a4.033 4.033 0 0 0 .139.016l.44.049 1.731.188c1.524.165 3.781.407 6.708.714 5.855.616 14.394 1.495 25.131 2.55a4859.582 4859.582 0 0 0 86.929 7.736C912.338 112.873 1002.37 118.5 1081 118.5v-2c-78.55 0-168.521-5.623-238.864-11.247a4862.892 4862.892 0 0 1-86.892-7.733 3742.387 3742.387 0 0 1-25.118-2.548 2277.852 2277.852 0 0 1-8.431-.901l-.438-.049-.11-.012-.028-.003h-.007c-.001 0-.002 0-.112.993zm360 23.5c78.63 0 168.66-5.627 239.02-11.253 35.19-2.813 65.46-5.626 86.93-7.736 10.74-1.055 19.28-1.934 25.13-2.55a2033.552 2033.552 0 0 0 8.44-.902l.44-.049.11-.012.03-.003h.01L1441 95l-.11-.994-.01.001-.03.003-.11.012-.44.048c-.38.043-.96.106-1.72.189-1.53.164-3.78.406-6.71.713-5.85.615-14.38 1.494-25.11 2.548-21.47 2.11-51.73 4.921-86.9 7.733-70.34 5.624-160.31 11.247-238.86 11.247v2zM1 95c.11.994.111.994.113.994l.006-.001.028-.003.11-.012a832.34 832.34 0 0 1 2.167-.236c1.523-.165 3.777-.407 6.702-.714 5.851-.615 14.385-1.494 25.118-2.548a4862.105 4862.105 0 0 1 86.892-7.733C192.479 79.123 282.448 73.5 361 73.5v-2c-78.631 0-168.662 5.627-239.023 11.253a4863.709 4863.709 0 0 0-86.929 7.736 3741.098 3741.098 0 0 0-25.13 2.55 2267.42 2267.42 0 0 0-8.44.902l-.44.049-.11.012-.029.003H.892c-.001.001-.002.001.108.995zm360-21.5c78.552 0 168.521 5.623 238.864 11.247a4861.657 4861.657 0 0 1 86.892 7.733 3742.387 3742.387 0 0 1 25.118 2.548 2277.852 2277.852 0 0 1 8.431.901l.438.049.11.012.028.003h.007c.001 0 .002 0 .112-.993.11-.994.109-.994.108-.994h-.007a4.033 4.033 0 0 0-.139-.016l-.44-.049-1.731-.188c-1.524-.165-3.781-.407-6.708-.714a3745.292 3745.292 0 0 0-25.131-2.55 4863.637 4863.637 0 0 0-86.929-7.736C529.662 77.127 439.631 71.5 361 71.5v2z&#39; fill=&#39;%23EDF2F7&#39; /%3E%3Cpath d=&#39;M721 95c-.406.914-.405.914-.403.915l.007.003.028.013c.025.01.063.027.112.05l.441.193c.39.171.971.424 1.734.755 1.527.66 3.786 1.628 6.715 2.86a1159.053 1159.053 0 0 0 25.146 10.204 1439.3 1439.3 0 0 0 86.972 30.959C912.132 163.461 1002.25 186 1081 186v-2c-78.43 0-168.315-22.461-238.639-44.952a1439.162 1439.162 0 0 1-86.849-30.916 1160.302 1160.302 0 0 1-25.103-10.187 718.783 718.783 0 0 1-6.696-2.852 417.12 417.12 0 0 1-2.162-.943l-.109-.048a1.004 1.004 0 0 1-.034-.015c-.002 0-.002-.001-.408.913zm360 91c78.75 0 168.87-22.539 239.25-45.048a1440.417 1440.417 0 0 0 86.97-30.959c10.74-4.222 19.29-7.74 25.15-10.204 2.93-1.232 5.18-2.2 6.71-2.86.76-.33 1.34-.584 1.73-.755.2-.085.35-.15.45-.194.05-.022.08-.038.11-.05l.03-.012v-.003s.01-.001-.4-.915l-.41-.913v.003a.14.14 0 0 0-.03.012c-.03.01-.06.027-.11.048-.1.043-.24.107-.44.192-.39.17-.96.422-1.72.75a754.49 754.49 0 0 1-6.7 2.853c-5.85 2.459-14.37 5.971-25.1 10.187a1440.735 1440.735 0 0 1-86.85 30.916C1249.31 161.539 1159.43 184 1081 184v2zM1 95c.406.914.406.914.408.913l.006-.003.028-.012.11-.048.436-.192a716.557 716.557 0 0 1 8.421-3.603c5.847-2.459 14.376-5.971 25.103-10.187a1438.123 1438.123 0 0 1 86.849-30.915C192.685 28.46 282.566 6 361 6V4c-78.749 0-168.868 22.539-239.248 45.047a1440.043 1440.043 0 0 0-86.972 30.96A1160.442 1160.442 0 0 0 9.634 90.21c-2.93 1.232-5.188 2.2-6.715 2.86a407.475 407.475 0 0 0-2.175.949l-.112.05-.028.012-.007.003c-.002 0-.003.001.403.915zM361 6c78.434 0 168.315 22.461 238.639 44.953a1438.217 1438.217 0 0 1 86.849 30.915 1161.015 1161.015 0 0 1 25.103 10.187 718.783 718.783 0 0 1 6.696 2.852 417.12 417.12 0 0 1 2.162.943l.109.048a1.004 1.004 0 0 1 .034.015c.002 0 .002.001.408-.913.406-.914.405-.914.403-.915l-.007-.003-.028-.013c-.025-.01-.063-.027-.112-.05l-.441-.193c-.39-.171-.971-.424-1.734-.755a729.681 729.681 0 0 0-6.715-2.86 1159.897 1159.897 0 0 0-25.146-10.204 1440.245 1440.245 0 0 0-86.972-30.96C529.868 26.54 439.749 4 361 4v2z&#39; fill=&#39;%23EDF2F7&#39; /%3E%3Cpath d=&#39;M2881 190H1441V95s202.82-45 360-45 360 45 360 45 202.82 45 360 45 360-45 360-45v95z&#39; fill=&#39;%23fff&#39; /%3E%3Cpath d=&#39;M721 95c-.316.949-.315.95-.313.95l.007.002.028.01.112.036.44.146a862.55 862.55 0 0 0 8.447 2.71 1402.428 1402.428 0 0 0 25.142 7.652 1778.488 1778.488 0 0 0 86.96 23.216C912.199 146.603 1002.29 163.5 1081 163.5v-2c-78.47 0-168.382-16.853-238.71-33.722a1777.19 1777.19 0 0 1-86.861-23.19 1399.482 1399.482 0 0 1-25.106-7.641 856.118 856.118 0 0 1-8.424-2.703l-.437-.144-.11-.037-.027-.009-.007-.002c-.002 0-.002 0-.318.948zm360 68.5c78.71 0 168.8-16.897 239.18-33.778a1782.519 1782.519 0 0 0 86.96-23.216c10.74-3.166 19.28-5.804 25.14-7.652a766.601 766.601 0 0 0 8.45-2.71l.44-.146c.05-.016.08-.028.11-.037a.172.172 0 0 1 .03-.009v-.002s.01-.001-.31-.95l-.32-.948v.002a.163.163 0 0 0-.03.01c-.03.007-.06.02-.11.036-.1.032-.25.08-.44.144-.39.127-.96.316-1.72.563-1.53.493-3.78 1.218-6.7 2.14-5.85 1.844-14.38 4.479-25.11 7.641a1777.105 1777.105 0 0 1-86.86 23.19C1249.38 144.647 1159.47 161.5 1081 161.5v2zM1 95c.316.949.316.949.318.948l.007-.002.027-.01a61.574 61.574 0 0 1 .547-.18 866.032 866.032 0 0 1 8.424-2.703 1404.167 1404.167 0 0 1 25.106-7.64 1776.776 1776.776 0 0 1 86.861-23.19C192.618 45.352 282.527 28.5 361 28.5v-2c-78.71 0-168.801 16.897-239.177 33.778a1778.831 1778.831 0 0 0-86.96 23.216 1405.54 1405.54 0 0 0-25.142 7.652 867.48 867.48 0 0 0-8.447 2.71 178.697 178.697 0 0 0-.587.194c-.002 0-.003.001.313.95zm360-66.5c78.473 0 168.382 16.853 238.71 33.722a1776.52 1776.52 0 0 1 86.861 23.19 1401.624 1401.624 0 0 1 25.106 7.641 856.118 856.118 0 0 1 8.424 2.703l.437.144.11.037.027.009.007.002c.002 0 .002 0 .318-.948.316-.949.315-.95.313-.95l-.007-.002-.028-.01-.112-.036a862.55 862.55 0 0 0-8.887-2.856 1406.453 1406.453 0 0 0-25.142-7.652 1778.897 1778.897 0 0 0-86.96-23.216C529.801 43.397 439.71 26.5 361 26.5v2z&#39; fill=&#39;%234FD1C5&#39; /%3E%3Cpath d=&#39;M4321 190H2881V95s202.82-45 360-45 360 45 360 45 202.82 45 360 45 360-45 360-45v95z&#39; fill=&#39;%23fff&#39; /%3E%3Cpath d=&#39;M1441 95s202.82-45 360-45 360 45 360 45 202.82 45 360 45 360-45 360-45 202.82-45 360-45 360 45 360 45 202.82 45 360 45 360-45 360-45&#39; stroke=&#39;%23EDF2F7&#39; stroke-width=&#39;2&#39; /%3E%3Cpath d=&#39;M1441 95s202.82-22.5 360-22.5S2161 95 2161 95s202.82 22.5 360 22.5S2881 95 2881 95s202.82-22.5 360-22.5S3601 95 3601 95s202.82 22.5 360 22.5S4321 95 4321 95&#39; stroke=&#39;%23EDF2F7&#39; stroke-width=&#39;2&#39; /%3E%3Cpath d=&#39;M1441 95s202.82-90 360-90 360 90 360 90 202.82 90 360 90 360-90 360-90 202.82-90 360-90 360 90 360 90 202.82 90 360 90 360-90 360-90&#39; stroke=&#39;%23EDF2F7&#39; stroke-width=&#39;2&#39; /%3E%3Cpath d=&#39;M1441 95s202.82-67.5 360-67.5S2161 95 2161 95s202.82 67.5 360 67.5S2881 95 2881 95s202.82-67.5 360-67.5S3601 95 3601 95s202.82 67.5 360 67.5S4321 95 4321 95&#39; stroke=&#39;%234FD1C5&#39; stroke-width=&#39;2&#39; /%3E%3C/svg%3E%0A&quot;);"></div>
+    <div class="bg-center bg-repeat-x -mb-8 hidden md:block" style="height: 190px; margin-top: -190px; background-size: 4322px 190px; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox=&#39;0 0 4322 190&#39; fill=&#39;none&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39;%3E%3Cpath fill=&#39;%23F7FAFC&#39; d=&#39;M1 0h4320v190H1z&#39; /%3E%3Cpath d=&#39;M1441 190H1V95s202.817-45 360-45 360 45 360 45 202.817 45 360 45c157.18 0 360-45 360-45v95z&#39; fill=&#39;%23fff&#39; /%3E%3Cpath d=&#39;M721 95c-.217.976-.216.976-.214.977l.007.001.028.007.111.024.441.097c.389.085.969.212 1.732.377 1.525.33 3.783.814 6.711 1.43 5.857 1.23 14.398 2.989 25.137 5.099a2518.171 2518.171 0 0 0 86.945 15.475C912.268 129.74 1002.33 141 1081 141v-2c-78.51 0-168.451-11.24-238.786-22.487a2518.276 2518.276 0 0 1-86.875-15.463 1956.06 1956.06 0 0 1-25.111-5.095 1180.206 1180.206 0 0 1-8.427-1.803l-.438-.096-.11-.024-.027-.006-.007-.002c-.002 0-.002 0-.219.976zm360 46c78.67 0 168.73-11.26 239.1-22.513a2519.232 2519.232 0 0 0 86.95-15.475c10.74-2.11 19.28-3.868 25.13-5.1 2.93-.615 5.19-1.1 6.72-1.43.76-.164 1.34-.29 1.73-.376.19-.043.34-.075.44-.097.05-.01.08-.019.11-.024a.228.228 0 0 1 .03-.007v-.001c.01 0 .01 0-.21-.977l-.22-.976-.01.002-.02.006c-.03.005-.06.013-.11.024l-.44.096-1.73.376c-1.52.33-3.77.812-6.7 1.427-5.85 1.23-14.38 2.987-25.11 5.095-21.46 4.217-51.71 9.84-86.87 15.463C1249.45 127.76 1159.51 139 1081 139v2zM1 95c.217.976.217.976.219.976a.12.12 0 0 1 .007-.002l.027-.006.11-.024.438-.096 1.726-.376c1.523-.33 3.776-.812 6.7-1.427A1958.54 1958.54 0 0 1 35.34 88.95a2517.83 2517.83 0 0 1 86.875-15.463C192.549 62.24 282.488 51 361 51v-2c-78.671 0-168.732 11.26-239.102 22.513a2520.39 2520.39 0 0 0-86.945 15.474 1960.08 1960.08 0 0 0-25.137 5.1 1190.357 1190.357 0 0 0-8.884 1.904l-.111.024-.028.007-.007.001c-.002 0-.003 0 .214.977zm360-44c78.512 0 168.451 11.24 238.786 22.487a2517.73 2517.73 0 0 1 86.875 15.463 1956.06 1956.06 0 0 1 25.111 5.095 1180.206 1180.206 0 0 1 8.427 1.803l.438.096.11.024.027.006.007.002c.002 0 .002 0 .219-.976s.216-.976.214-.977l-.007-.001-.028-.007a52.997 52.997 0 0 1-.111-.024l-.441-.097c-.389-.085-.969-.212-1.732-.377-1.525-.33-3.783-.814-6.711-1.43a1963.63 1963.63 0 0 0-25.137-5.1 2520.12 2520.12 0 0 0-86.945-15.474C529.732 60.26 439.671 49 361 49v2z&#39; fill=&#39;%23EDF2F7&#39; /%3E%3Cpath d=&#39;M721 95c-.11.994-.109.994-.108.994h.007a4.033 4.033 0 0 0 .139.016l.44.049 1.731.188c1.524.165 3.781.407 6.708.714 5.855.616 14.394 1.495 25.131 2.55a4859.582 4859.582 0 0 0 86.929 7.736C912.338 112.873 1002.37 118.5 1081 118.5v-2c-78.55 0-168.521-5.623-238.864-11.247a4862.892 4862.892 0 0 1-86.892-7.733 3742.387 3742.387 0 0 1-25.118-2.548 2277.852 2277.852 0 0 1-8.431-.901l-.438-.049-.11-.012-.028-.003h-.007c-.001 0-.002 0-.112.993zm360 23.5c78.63 0 168.66-5.627 239.02-11.253 35.19-2.813 65.46-5.626 86.93-7.736 10.74-1.055 19.28-1.934 25.13-2.55a2033.552 2033.552 0 0 0 8.44-.902l.44-.049.11-.012.03-.003h.01L1441 95l-.11-.994-.01.001-.03.003-.11.012-.44.048c-.38.043-.96.106-1.72.189-1.53.164-3.78.406-6.71.713-5.85.615-14.38 1.494-25.11 2.548-21.47 2.11-51.73 4.921-86.9 7.733-70.34 5.624-160.31 11.247-238.86 11.247v2zM1 95c.11.994.111.994.113.994l.006-.001.028-.003.11-.012a832.34 832.34 0 0 1 2.167-.236c1.523-.165 3.777-.407 6.702-.714 5.851-.615 14.385-1.494 25.118-2.548a4862.105 4862.105 0 0 1 86.892-7.733C192.479 79.123 282.448 73.5 361 73.5v-2c-78.631 0-168.662 5.627-239.023 11.253a4863.709 4863.709 0 0 0-86.929 7.736 3741.098 3741.098 0 0 0-25.13 2.55 2267.42 2267.42 0 0 0-8.44.902l-.44.049-.11.012-.029.003H.892c-.001.001-.002.001.108.995zm360-21.5c78.552 0 168.521 5.623 238.864 11.247a4861.657 4861.657 0 0 1 86.892 7.733 3742.387 3742.387 0 0 1 25.118 2.548 2277.852 2277.852 0 0 1 8.431.901l.438.049.11.012.028.003h.007c.001 0 .002 0 .112-.993.11-.994.109-.994.108-.994h-.007a4.033 4.033 0 0 0-.139-.016l-.44-.049-1.731-.188c-1.524-.165-3.781-.407-6.708-.714a3745.292 3745.292 0 0 0-25.131-2.55 4863.637 4863.637 0 0 0-86.929-7.736C529.662 77.127 439.631 71.5 361 71.5v2z&#39; fill=&#39;%23EDF2F7&#39; /%3E%3Cpath d=&#39;M721 95c-.406.914-.405.914-.403.915l.007.003.028.013c.025.01.063.027.112.05l.441.193c.39.171.971.424 1.734.755 1.527.66 3.786 1.628 6.715 2.86a1159.053 1159.053 0 0 0 25.146 10.204 1439.3 1439.3 0 0 0 86.972 30.959C912.132 163.461 1002.25 186 1081 186v-2c-78.43 0-168.315-22.461-238.639-44.952a1439.162 1439.162 0 0 1-86.849-30.916 1160.302 1160.302 0 0 1-25.103-10.187 718.783 718.783 0 0 1-6.696-2.852 417.12 417.12 0 0 1-2.162-.943l-.109-.048a1.004 1.004 0 0 1-.034-.015c-.002 0-.002-.001-.408.913zm360 91c78.75 0 168.87-22.539 239.25-45.048a1440.417 1440.417 0 0 0 86.97-30.959c10.74-4.222 19.29-7.74 25.15-10.204 2.93-1.232 5.18-2.2 6.71-2.86.76-.33 1.34-.584 1.73-.755.2-.085.35-.15.45-.194.05-.022.08-.038.11-.05l.03-.012v-.003s.01-.001-.4-.915l-.41-.913v.003a.14.14 0 0 0-.03.012c-.03.01-.06.027-.11.048-.1.043-.24.107-.44.192-.39.17-.96.422-1.72.75a754.49 754.49 0 0 1-6.7 2.853c-5.85 2.459-14.37 5.971-25.1 10.187a1440.735 1440.735 0 0 1-86.85 30.916C1249.31 161.539 1159.43 184 1081 184v2zM1 95c.406.914.406.914.408.913l.006-.003.028-.012.11-.048.436-.192a716.557 716.557 0 0 1 8.421-3.603c5.847-2.459 14.376-5.971 25.103-10.187a1438.123 1438.123 0 0 1 86.849-30.915C192.685 28.46 282.566 6 361 6V4c-78.749 0-168.868 22.539-239.248 45.047a1440.043 1440.043 0 0 0-86.972 30.96A1160.442 1160.442 0 0 0 9.634 90.21c-2.93 1.232-5.188 2.2-6.715 2.86a407.475 407.475 0 0 0-2.175.949l-.112.05-.028.012-.007.003c-.002 0-.003.001.403.915zM361 6c78.434 0 168.315 22.461 238.639 44.953a1438.217 1438.217 0 0 1 86.849 30.915 1161.015 1161.015 0 0 1 25.103 10.187 718.783 718.783 0 0 1 6.696 2.852 417.12 417.12 0 0 1 2.162.943l.109.048a1.004 1.004 0 0 1 .034.015c.002 0 .002.001.408-.913.406-.914.405-.914.403-.915l-.007-.003-.028-.013c-.025-.01-.063-.027-.112-.05l-.441-.193c-.39-.171-.971-.424-1.734-.755a729.681 729.681 0 0 0-6.715-2.86 1159.897 1159.897 0 0 0-25.146-10.204 1440.245 1440.245 0 0 0-86.972-30.96C529.868 26.54 439.749 4 361 4v2z&#39; fill=&#39;%23EDF2F7&#39; /%3E%3Cpath d=&#39;M2881 190H1441V95s202.82-45 360-45 360 45 360 45 202.82 45 360 45 360-45 360-45v95z&#39; fill=&#39;%23fff&#39; /%3E%3Cpath d=&#39;M721 95c-.316.949-.315.95-.313.95l.007.002.028.01.112.036.44.146a862.55 862.55 0 0 0 8.447 2.71 1402.428 1402.428 0 0 0 25.142 7.652 1778.488 1778.488 0 0 0 86.96 23.216C912.199 146.603 1002.29 163.5 1081 163.5v-2c-78.47 0-168.382-16.853-238.71-33.722a1777.19 1777.19 0 0 1-86.861-23.19 1399.482 1399.482 0 0 1-25.106-7.641 856.118 856.118 0 0 1-8.424-2.703l-.437-.144-.11-.037-.027-.009-.007-.002c-.002 0-.002 0-.318.948zm360 68.5c78.71 0 168.8-16.897 239.18-33.778a1782.519 1782.519 0 0 0 86.96-23.216c10.74-3.166 19.28-5.804 25.14-7.652a766.601 766.601 0 0 0 8.45-2.71l.44-.146c.05-.016.08-.028.11-.037a.172.172 0 0 1 .03-.009v-.002s.01-.001-.31-.95l-.32-.948v.002a.163.163 0 0 0-.03.01c-.03.007-.06.02-.11.036-.1.032-.25.08-.44.144-.39.127-.96.316-1.72.563-1.53.493-3.78 1.218-6.7 2.14-5.85 1.844-14.38 4.479-25.11 7.641a1777.105 1777.105 0 0 1-86.86 23.19C1249.38 144.647 1159.47 161.5 1081 161.5v2zM1 95c.316.949.316.949.318.948l.007-.002.027-.01a61.574 61.574 0 0 1 .547-.18 866.032 866.032 0 0 1 8.424-2.703 1404.167 1404.167 0 0 1 25.106-7.64 1776.776 1776.776 0 0 1 86.861-23.19C192.618 45.352 282.527 28.5 361 28.5v-2c-78.71 0-168.801 16.897-239.177 33.778a1778.831 1778.831 0 0 0-86.96 23.216 1405.54 1405.54 0 0 0-25.142 7.652 867.48 867.48 0 0 0-8.447 2.71 178.697 178.697 0 0 0-.587.194c-.002 0-.003.001.313.95zm360-66.5c78.473 0 168.382 16.853 238.71 33.722a1776.52 1776.52 0 0 1 86.861 23.19 1401.624 1401.624 0 0 1 25.106 7.641 856.118 856.118 0 0 1 8.424 2.703l.437.144.11.037.027.009.007.002c.002 0 .002 0 .318-.948.316-.949.315-.95.313-.95l-.007-.002-.028-.01-.112-.036a862.55 862.55 0 0 0-8.887-2.856 1406.453 1406.453 0 0 0-25.142-7.652 1778.897 1778.897 0 0 0-86.96-23.216C529.801 43.397 439.71 26.5 361 26.5v2z&#39; fill=&#39;%234FD1C5&#39; /%3E%3Cpath d=&#39;M4321 190H2881V95s202.82-45 360-45 360 45 360 45 202.82 45 360 45 360-45 360-45v95z&#39; fill=&#39;%23fff&#39; /%3E%3Cpath d=&#39;M1441 95s202.82-45 360-45 360 45 360 45 202.82 45 360 45 360-45 360-45 202.82-45 360-45 360 45 360 45 202.82 45 360 45 360-45 360-45&#39; stroke=&#39;%23EDF2F7&#39; stroke-width=&#39;2&#39; /%3E%3Cpath d=&#39;M1441 95s202.82-22.5 360-22.5S2161 95 2161 95s202.82 22.5 360 22.5S2881 95 2881 95s202.82-22.5 360-22.5S3601 95 3601 95s202.82 22.5 360 22.5S4321 95 4321 95&#39; stroke=&#39;%23EDF2F7&#39; stroke-width=&#39;2&#39; /%3E%3Cpath d=&#39;M1441 95s202.82-90 360-90 360 90 360 90 202.82 90 360 90 360-90 360-90 202.82-90 360-90 360 90 360 90 202.82 90 360 90 360-90 360-90&#39; stroke=&#39;%23EDF2F7&#39; stroke-width=&#39;2&#39; /%3E%3Cpath d=&#39;M1441 95s202.82-67.5 360-67.5S2161 95 2161 95s202.82 67.5 360 67.5S2881 95 2881 95s202.82-67.5 360-67.5S3601 95 3601 95s202.82 67.5 360 67.5S4321 95 4321 95&#39; stroke=&#39;%234FD1C5&#39; stroke-width=&#39;2&#39; /%3E%3C/svg%3E%0A&quot;);"></div>
+  </div>
+</div>
+
+<div id='entrybtn'>
+	<div id="simptomislike" class="container max-w-screen-xl mx-auto px-6 mt-12 mb-3 md:mb-12 pt-6 pb-6">
+	  <h2 class="text-2xl font-bold text-center mb-6">Tipični simptomi okužbe COVID-19 so</h2>
+		<div class="grid grid-cols-3 lg:grid-cols-6 mb-3 lg:mb-6">
+		  <div class=" text-gray-800 font-bold py-2 px-3 text-center">
+        <img class="inline mb-3" src="index_files/buttons/svg/temperature.svg"><br>
+        <span>Povišana temparatura</span>
+		  </div>
+		  <div class=" text-gray-800 font-bold py-2 px-3 text-center">
+        <img class="inline mb-3" src="index_files/buttons/svg/headache.svg"><br>
+        <span>Glavobol</span>
+		  </div>
+		  <div class=" text-gray-800 font-bold py-2 px-3 text-center">
+        <img class="inline mb-3" src="index_files/buttons/svg/cough.svg"><br>
+        <span>Kašelj</span>
+		  </div>
+		  <div class=" text-gray-800 font-bold py-2 px-3 text-center">
+        <img class="inline mb-3" src="index_files/buttons/svg/nose-drip.svg"><br>
+        <span>Izcedek iz nosu</span>
+		  </div>
+		  <div class=" text-gray-800 font-bold py-2 px-3 text-center">
+        <img class="inline mb-3" src="index_files/buttons/svg/muscle-pain.svg"><br>
+        <span>Bolečine v mišicah</span>
+		  </div>
+		  <div class=" text-gray-800 font-bold py-2 px-3 text-center">
+        <img class="inline mb-3" src="index_files/buttons/svg/heavy-breathing.svg"><br>
+        <span>Težave z dihanjem</span>
+		  </div>
+	  </div>
+	</div>
+
+	<hr>
+
+	<div class="w-full max-w-screen-xl mx-auto px-6">
+	  <div class="lg:flex -mx-6 mt-3 md:mt-12">
+		
+		<div class="bg-white px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full">
+
+
+			<h2 class="text-xl md:text-2xl font-bold text-center mb-6">Ali imate oziroma ste imeli katerega od naštetih simptomov in zato sklepate na svojo okuženost s COVID-19?</h2>
+			<div class="-mx-6 flex mb-6">
+			  <div class="w-1/2 px-6">
+				<button onclick="nimamsimptomov()" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+				  <img class="inline w-full" src="index_files/buttons/svg/healthy.svg"><br>
+				  <span class="block pt-6 pb-6">NE</span>
+				</button>
+			  </div>
+			  <div class="w-1/2 px-6">
+				<button onclick="imamsimptome()" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+				  <img class="inline w-full" src="index_files/buttons/svg/has-symptoms.svg">
+				  <span class="block pt-6 pb-6">DA</span>
+				</button>
+			  </div>
+			</div>
+		
+
+		</div>
+		
+	  </div>
+	</div>
+</div>
+
+<hr>
+
+<form method="post" action="" name="form" id="entryform" enctype="multipart/mixed">
+	<input type="text" name="simptomi" id="simptomi" value=""  hidden/>
+	<input type="text" name="stevilo" id="stevilo" value=""  hidden/>
+	<div class="w-full max-w-screen-xl mx-auto px-6">
+	  <div class="lg:flex -mx-6 pt-12">
+		
+		<div class="bg-white px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full">
+		<h1 class="text-4xl font-bold text-center">ANONIMNO SAMOPOROČANJE<br></h1>
+		<h2 id="gospodinjstvo" class="text-2xl text-center">V PRIMERU, DA STE V VAŠEM GOSPODINJSTVU VSI BREZ SIMPTOMOV OKUŽBE, LAHKO TO POROČATE ZA VSE NAENKRAT<br></h2>
+		</div>
+	  </div>
+	</div>
+
+	<hr>
+
+	<div class="w-full max-w-screen-xl mx-auto px-6">
+	  <div class="lg:flex -mx-6 pt-12">
+		
+		<div class="bg-white px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full">
+
+			<div id='entrystevilo'>
+				<div class="-mx-3 md:flex">
+				  <div class="md:w-full px-3">
+					<label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="zip">
+					  IZBERITE ŠTEVILO OSEB BREZ SIMPTOMOV V VAŠEM GOSPODINSTVU
+					</label>
+				  </div>
+				</div>
+				<div class="-mx-3 flex mb-6">
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="minus()" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline lg:w-32 sm:16" src="index_files/buttons/svg/minus.svg"><br>
+					</button>
+				  </div>
+				  <div class="w-1/3 px-3 text-center">
+					<span id='stevilotext' class="text-6xl font-bold">1</span>
+				  </div>
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="plus()" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline lg:w-32 sm:16" src="index_files/buttons/svg/plus.svg"><br>
+					</button>
+				  </div>
+				</div>
+			</div>
+			<div id='entrydemografija'>
+				<input type="number" name="letnica" id="letnica" value=""  hidden/>
+				<input type="number" name="starost" id="starost" value=""  hidden/>
+				<input type="text" name="spol" id="spol" value=""  hidden/>
+				<input type="number" name="covid" id="covid" hidden/>
+				<input type="text" name="simptom1" id="simptom1" hidden/>
+				<input type="text" name="simptom2" id="simptom2" hidden/>
+				<input type="text" name="simptom3" id="simptom3" hidden/>
+				<input type="text" name="simptom4" id="simptom4" hidden/>
+				<input type="text" name="simptom5" id="simptom5" hidden/>
+				<input type="text" name="simptom6" id="simptom6" hidden/>
+				<div class="-mx-3 md:flex">
+				  <div class="md:w-full px-3">
+					<label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="zip">
+					  OZNAČITE STANJE, KI NAJBOLJ USTREZA VAŠI OKUŽBI
+					</label>
+				  </div>
+				</div>
+				<div class="-mx-3 flex mb-6">
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setstatus(1)" id="status1" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/covid-19.svg"><br>
+					  <span class="block pt-6 pb-6">Imam potrjeno okužbo</span>
+					</button>
+				  </div>
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setstatus(2)" id="status2" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/suspects-contact.svg"><br>
+					  <span class="block pt-6 pb-6">Mislim, da sem okužen(a) in sem bil(a) v stiku z osebo s potrjeno okužbo</span>
+					</button>
+				  </div>
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setstatus(3)" id="status3" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/suspects-no-contact.svg"><br>
+					  <span class="block pt-6 pb-6">Mislim, da sem okužen(a), a ne vem, da bi bil(a) v stiku z osebo s potrjeno okužbo</span>
+					</button>
+				  </div>
+				</div>
+
+				<div class="-mx-3 md:flex">
+				  <div class="md:w-full px-3">
+					<label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="zip">
+					  OZNAČITE VSE SIMPTOME, KI JIH IMATE OZIROMA STE JIH IMELI 
+					</label>
+				  </div>
+				</div>
+				<div class="-mx-3 flex mb-6">
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setsimptom(1)" id="setsimptom1" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/temperature.svg"><br>
+					  <span class="block pt-6 pb-6">Povišana temperatura</span>
+					</button>
+				  </div>
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setsimptom(2)" id="setsimptom2" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/headache.svg"><br>
+					  <span class="block pt-6 pb-6">Glavobol</span>
+					</button>
+				  </div>
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setsimptom(3)" id="setsimptom3" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/cough.svg"><br>
+					  <span class="block pt-6 pb-6">Kašelj</span>
+					</button>
+				  </div>
+				</div>
+				<div class="-mx-3 flex mb-6">
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setsimptom(4)" id="setsimptom4" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/nose-drip.svg"><br>
+					  <span class="block pt-6 pb-6">Izcedek iz nosu</span>
+					</button>
+				  </div>
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setsimptom(5)" id="setsimptom5" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/muscle-pain.svg"><br>
+					  <span class="block pt-6 pb-6">Bolečine v mišicah</span>
+					</button>
+				  </div>
+				  <div class="w-1/3 px-3">
+					<button type="button" onclick="setsimptom(6)" id="setsimptom6" class="text-gray-800 font-bold py-2 px-4 rounded w-full h-full text-center shadow-md hover:opacity-75 hover:shadow-inner" style="background-color: #cde8e7;">
+					  <img class="inline w-full" src="index_files/buttons/svg/heavy-breathing.svg"><br>
+					  <span class="block pt-6 pb-6">Težave z dihanjem</span>
+					</button>
+				  </div>
+				</div>
+
+				<div class="-mx-3 md:flex mb-6">
+				  <div class="md:w-full px-3">
+					<label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-password">
+					  VPIŠITE ČIMBOLJ NATANČEN DATUM, KO STE ZAZNALI PRVE SIMPTOME OKUŽBE
+					</label>
+					<input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" type="date" id="datum" name="datum" min="2020-03-01" placeholder="Izberi datum">
+				  </div>
+				</div>
+			</div>	
+			<div class="-mx-3 md:flex mb-6">
+			  <div class="md:w-full px-3">
+				<label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-password">
+				  VPIŠITE SVOJ EMŠO
+				</label>
+				<input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="emso" min="0101000000000" max="3112999999999" type="number" placeholder="Vnesi svojo EMŠO številko">
+				<p class="text-red text-xs italic">Vpisan EMŠO se NE POŠLJE preko spleta in se NE SHRANJUJE ampak se pred pošiljanjem anonimizira s SHA256 algoritmom. Na ta način iz anonimizirane EMŠO, ki jo hranimo, ni mogoče priti povratno do prave EMŠO. Vnašanje EMŠO pa je nujno za zagotavljanje konsistentnosti in verodostojnosti podatkov.</p>
+			  </div>
+			</div>
+			<div class="-mx-3 md:flex mb-6">
+			  <div class="md:w-full px-3">
+				<label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="zip">
+				  IZBERITE REGIJO / OBČINO BIVALIŠČA
+				</label>
+				<input type="text" name="obcina" id="obcina" value=""  hidden/>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="regija" name="regija" size="5">
+					 <option value="Gorenjska">Gorenjska</option>
+					 <option value="Goriška">Goriška</option>
+					 <option value="Jugovzhodna">Jugovzhodna</option>
+					 <option value="Koroška">Koroška</option>
+					 <option value="Notranjsko-kraška">Notranjsko-kraška</option>
+					 <option value="Obalno-kraška">Obalno-kraška</option>
+					 <option value="Osrednjeslovenska">Osrednjeslovenska</option>
+					 <option value="Podravska">Podravska</option>
+					 <option value="Pomurska">Pomurska</option>
+					 <option value="Savinjska">Savinjska</option>
+					 <option value="Spodnjeposavska">Spodnjeposavska</option>
+					 <option value="Zasavska">Zasavska</option>
+				</select>
+			  </div>
+			</div>
+			<div class="-mx-3 md:flex mb-6">
+			  <div class="md:w-full px-3">
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Gorenjska" size="5">
+					<option value='Bled'>Bled</option>
+					<option value='Bohinj'>Bohinj</option>
+					<option value='Cerklje na Gorenjskem'>Cerklje na Gorenjskem</option>
+					<option value='Gorenja vas - Poljane'>Gorenja vas - Poljane</option>
+					<option value='Gorje'>Gorje</option>
+					<option value='Jesenice'>Jesenice</option>
+					<option value='Jezersko'>Jezersko</option>
+					<option value='Kranj'>Kranj</option>
+					<option value='Kranjska Gora'>Kranjska Gora</option>
+					<option value='Naklo'>Naklo</option>
+					<option value='Preddvor'>Preddvor</option>
+					<option value='Radovljica'>Radovljica</option>
+					<option value='Šenčur'>Šenčur</option>
+					<option value='Škofja Loka'>Škofja Loka</option>
+					<option value='Trzin'>Trzin</option>
+					<option value='Tržič'>Tržič</option>
+					<option value='Železniki'>Železniki</option>
+					<option value='Žiri'>Žiri</option>
+					<option value='Žirovnica'>Žirovnica</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Goriška" size="5">
+					<option value='Ajdovščina'>Ajdovščina</option>
+					<option value='Bovec'>Bovec</option>
+					<option value='Brda'>Brda</option>
+					<option value='Cerkno'>Cerkno</option>
+					<option value='Idrija'>Idrija</option>
+					<option value='Kanal ob Soči'>Kanal ob Soči</option>
+					<option value='Kobarid'>Kobarid</option>
+					<option value='Miren - Kostanjevica'>Miren - Kostanjevica</option>
+					<option value='Nova Gorica'>Nova Gorica</option>
+					<option value='Renče - Vogrsko'>Renče - Vogrsko</option>
+					<option value='Šempeter - Vrtojba'>Šempeter - Vrtojba</option>
+					<option value='Tolmin'>Tolmin</option>
+					<option value='Vipava'>Vipava</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Jugovzhodna" size="5">
+					<option value='Črnomelj'>Črnomelj</option>
+					<option value='Dolenjske Toplice'>Dolenjske Toplice</option>
+					<option value='Kostel'>Kostel</option>
+					<option value='Loški Potok'>Loški Potok</option>
+					<option value='Metlika'>Metlika</option>
+					<option value='Mirna'>Mirna</option>
+					<option value='Mirna Peč'>Mirna Peč</option>
+					<option value='Mokronog - Trebelno'>Mokronog - Trebelno</option>
+					<option value='Novo mesto'>Novo mesto</option>
+					<option value='Osilnica'>Osilnica</option>
+					<option value='Ribnica'>Ribnica</option>
+					<option value='Semič'>Semič</option>
+					<option value='Sodražica'>Sodražica</option>
+					<option value='Straža'>Straža</option>
+					<option value='Šentjernej'>Šentjernej</option>
+					<option value='Šentrupert'>Šentrupert</option>
+					<option value='Škocjan'>Škocjan</option>
+					<option value='Trebnje'>Trebnje</option>
+					<option value='Žužemberk'>Žužemberk</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Koroška" size="5">
+					<option value='Črna na Koroškem'>Črna na Koroškem</option>
+					<option value='Dravograd'>Dravograd</option>
+					<option value='Mežica'>Mežica</option>
+					<option value='Mislinja'>Mislinja</option>
+					<option value='Muta'>Muta</option>
+					<option value='Podvelka'>Podvelka</option>
+					<option value='Prevalje'>Prevalje</option>
+					<option value='Radlje ob Dravi'>Radlje ob Dravi</option>
+					<option value='Ravne na Koroškem'>Ravne na Koroškem</option>
+					<option value='Ribnica na Pohorju'>Ribnica na Pohorju</option>
+					<option value='Slovenj Gradec'>Slovenj Gradec</option>
+					<option value='Vuzenica'>Vuzenica</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Notranjsko-kraška" size="5">
+					<option value='Bloke'>Bloke</option>
+					<option value='Cerknica'>Cerknica</option>
+					<option value='Ilirska Bistrica'>Ilirska Bistrica</option>
+					<option value='Loška dolina'>Loška dolina</option>
+					<option value='Postojna'>Postojna</option>
+					<option value='Ankaran'>Ankaran</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Obalno-kraška" size="5">
+					<option value='Divača'>Divača</option>
+					<option value='Hrpelje - Kozina'>Hrpelje - Kozina</option>
+					<option value='Izola'>Izola</option>
+					<option value='Komen'>Komen</option>
+					<option value='Koper'>Koper</option>
+					<option value='Piran'>Piran</option>
+					<option value='Pivka'>Pivka</option>
+					<option value='Radeče'>Radeče</option>
+					<option value='Sežana'>Sežana</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Osrednjeslovenska" size="5">
+					<option value='Borovnica'>Borovnica</option>
+					<option value='Brezovica'>Brezovica</option>
+					<option value='Dobrepolje'>Dobrepolje</option>
+					<option value='Dobrova - Polhov Gradec'>Dobrova - Polhov Gradec</option>
+					<option value='Dol pri Ljubljani'>Dol pri Ljubljani</option>
+					<option value='Domžale'>Domžale</option>
+					<option value='Grosuplje'>Grosuplje</option>
+					<option value='Horjul'>Horjul</option>
+					<option value='Ig'>Ig</option>
+					<option value='Ivančna Gorica'>Ivančna Gorica</option>
+					<option value='Kamnik'>Kamnik</option>
+					<option value='Kočevje'>Kočevje</option>
+					<option value='Komenda'>Komenda</option>
+					<option value='Litija'>Litija</option>
+					<option value='Ljubljana'>Ljubljana</option>
+					<option value='Log - Dragomer'>Log - Dragomer</option>
+					<option value='Logatec'>Logatec</option>
+					<option value='Lukovica'>Lukovica</option>
+					<option value='Medvode'>Medvode</option>
+					<option value='Mengeš'>Mengeš</option>
+					<option value='Moravče'>Moravče</option>
+					<option value='Škofljica'>Škofljica</option>
+					<option value='Šmarješke Toplice'>Šmarješke Toplice</option>
+					<option value='Šmartno pri Litiji'>Šmartno pri Litiji</option>
+					<option value='Velike Lašče'>Velike Lašče</option>
+					<option value='Vodice'>Vodice</option>
+					<option value='Vrhnika'>Vrhnika</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Podravska" size="5">
+					<option value='Benedikt'>Benedikt</option>
+					<option value='Cerkvenjak'>Cerkvenjak</option>
+					<option value='Cirkulane'>Cirkulane</option>
+					<option value='Destrnik'>Destrnik</option>
+					<option value='Dornava'>Dornava</option>
+					<option value='Duplek'>Duplek</option>
+					<option value='Gorišnica'>Gorišnica</option>
+					<option value='Hajdina'>Hajdina</option>
+					<option value='Hoče - Slivnica'>Hoče - Slivnica</option>
+					<option value='Juršinci'>Juršinci</option>
+					<option value='Kidričevo'>Kidričevo</option>
+					<option value='Kungota'>Kungota</option>
+					<option value='Lenart'>Lenart</option>
+					<option value='Lovrenc na Pohorju'>Lovrenc na Pohorju</option>
+					<option value='Majšperk'>Majšperk</option>
+					<option value='Makole'>Makole</option>
+					<option value='Maribor'>Maribor</option>
+					<option value='Markovci'>Markovci</option>
+					<option value='Miklavž na Dravskem polju'>Miklavž na Dravskem polju</option>
+					<option value='Oplotnica'>Oplotnica</option>
+					<option value='Ormož'>Ormož</option>
+					<option value='Pesnica'>Pesnica</option>
+					<option value='Podlehnik'>Podlehnik</option>
+					<option value='Poljčane'>Poljčane</option>
+					<option value='Ptuj'>Ptuj</option>
+					<option value='Rače - Fram'>Rače - Fram</option>
+					<option value='Ruše'>Ruše</option>
+					<option value='Selnica ob Dravi'>Selnica ob Dravi</option>
+					<option value='Slovenska Bistrica'>Slovenska Bistrica</option>
+					<option value='Središče ob Dravi'>Središče ob Dravi</option>
+					<option value='Starše'>Starše</option>
+					<option value='Sveta Ana'>Sveta Ana</option>
+					<option value='Sveta Trojica v Slovenskih goricah'>Sveta Trojica v Slovenskih goricah</option>
+					<option value='Sveti Andraž v Slovenskih goricah'>Sveti Andraž v Slovenskih goricah</option>
+					<option value='Sveti Jurij v Slovenskih goricah'>Sveti Jurij v Slovenskih goricah</option>
+					<option value='Sveti Tomaž'>Sveti Tomaž</option>
+					<option value='Šentilj'>Šentilj</option>
+					<option value='Videm'>Videm</option>
+					<option value='Zavrč'>Zavrč</option>
+					<option value='Žetale'>Žetale</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Pomurska" size="5">
+					<option value='Apače'>Apače</option>
+					<option value='Beltinci'>Beltinci</option>
+					<option value='Cankova'>Cankova</option>
+					<option value='Črenšovci'>Črenšovci</option>
+					<option value='Dobrovnik'>Dobrovnik</option>
+					<option value='Gornja Radgona'>Gornja Radgona</option>
+					<option value='Gornji Petrovci'>Gornji Petrovci</option>
+					<option value='Grad'>Grad</option>
+					<option value='Hodoš'>Hodoš</option>
+					<option value='Kobilje'>Kobilje</option>
+					<option value='Križevci'>Križevci</option>
+					<option value='Kuzma'>Kuzma</option>
+					<option value='Lendava'>Lendava</option>
+					<option value='Ljutomer'>Ljutomer</option>
+					<option value='Moravske Toplice'>Moravske Toplice</option>
+					<option value='Murska Sobota'>Murska Sobota</option>
+					<option value='Odranci'>Odranci</option>
+					<option value='Puconci'>Puconci</option>
+					<option value='Radenci'>Radenci</option>
+					<option value='Razkrižje'>Razkrižje</option>
+					<option value='Rogašovci'>Rogašovci</option>
+					<option value='Sveti Jurij ob Ščavnici'>Sveti Jurij ob Ščavnici</option>
+					<option value='Šalovci'>Šalovci</option>
+					<option value='Tišina'>Tišina</option>
+					<option value='Turnišče'>Turnišče</option>
+					<option value='Velika Polana'>Velika Polana</option>
+					<option value='Veržej'>Veržej</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Savinjska" size="5">
+					<option value='Bistrica ob Sotli'>Bistrica ob Sotli</option>
+					<option value='Braslovče'>Braslovče</option>
+					<option value='Celje'>Celje</option>
+					<option value='Dobje'>Dobje</option>
+					<option value='Dobrna'>Dobrna</option>
+					<option value='Gornji Grad'>Gornji Grad</option>
+					<option value='Kozje'>Kozje</option>
+					<option value='Laško'>Laško</option>
+					<option value='Ljubno'>Ljubno</option>
+					<option value='Luče'>Luče</option>
+					<option value='Mozirje'>Mozirje</option>
+					<option value='Nazarje'>Nazarje</option>
+					<option value='Podčetrtek'>Podčetrtek</option>
+					<option value='Polzela'>Polzela</option>
+					<option value='Prebold'>Prebold</option>
+					<option value='Rečica ob Savinji'>Rečica ob Savinji</option>
+					<option value='Rogaška Slatina'>Rogaška Slatina</option>
+					<option value='Rogatec'>Rogatec</option>
+					<option value='Slovenske Konjice'>Slovenske Konjice</option>
+					<option value='Solčava'>Solčava</option>
+					<option value='Šentjur'>Šentjur</option>
+					<option value='Šmarje pri Jelšah'>Šmarje pri Jelšah</option>
+					<option value='Šmartno ob Paki'>Šmartno ob Paki</option>
+					<option value='Šoštanj'>Šoštanj</option>
+					<option value='Štore'>Štore</option>
+					<option value='Tabor'>Tabor</option>
+					<option value='Trnovska vas'>Trnovska vas</option>
+					<option value='Velenje'>Velenje</option>
+					<option value='Vitanje'>Vitanje</option>
+					<option value='Vojnik'>Vojnik</option>
+					<option value='Vransko'>Vransko</option>
+					<option value='Zreče'>Zreče</option>
+					<option value='Žalec'>Žalec</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Spodnjeposavska" size="4">
+					<option value='Brežice'>Brežice</option>
+					<option value='Kostanjevica na Krki'>Kostanjevica na Krki</option>
+					<option value='Krško'>Krško</option>
+					<option value='Sevnica'>Sevnica</option>
+				</select>
+				<select class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="Zasavska" size="3">
+					<option value='Hrastnik'>Hrastnik</option>
+					<option value='Trbovlje'>Trbovlje</option>
+					<option value='Zagorje ob Savi'>Zagorje ob Savi</option>
+				</select>
+			  </div>
+			</div>
+
+			<div class="-mx-3 md:flex mb-6">
+			  <div class="md:w-full px-3 text-center">
+				<input type="text" name="hashText" id="hashText" value="" hidden/><br>
+				<div class="g-recaptcha" align="center"  data-sitekey="6LcNY-IUAAAAAGaFyf_PQQexWGNyGWlECvJfjLdx"></div>
+			  </div>
+			</div>
+			
+			<div class="-mx-3 md:flex mb-6">
+			  <div class="md:w-full px-3 text-center">
+				<span style="color:red;display:none;" id='error'></span>
+			  </div>
+			</div>
+
+			<div class="-mx-3 md:flex mb-6">
+			  <div class="md:w-full px-3 text-center">
+				<button type="button" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded" onclick="generateHash()">Sporoči podatke!</button>
+			  </div>
+			</div>
+		</div>
+	  </div>	
+	</div>	
+</form>
+
+	<hr>
+
+	<!-- PREGLED PODATKOV -->
+	<div id="statistika" class="bg-gray-300 pt-12 pb-12">
+	  <div id="container" class="mx-auto pt-12 pb-12 px-6 container">
+		<h1 class="font-mono text-4xl font-bold text-center mb-12">PREGLED PODATKOV</h1>
+
+		<div class="flex flex-wrap md:flex-no-wrap">
+		  <div class="w-full md:w-3/5 mb-6 md:mb-0">
+			<p>Naša podrobna statistika zdravih, okuženih, samoizoliranih in ozdravljenih Slovencev na nivojih Slovenije, regije in občine bo zaradi reprezentativnosti vzorca tukaj na voljo šele, ko zberemo podatke od 200.000 Slovencev.
+			<br /><br />
+			<span class="font-medium">Delite to stran in nam jih pomagajte čimprej zbrati še podatke od <span id="zbrali-smo-dif">100000</span> Slovencev</span>, da boste lahko pregledovali naše podatke in na njihovi osnovi sprejemali dobre odločitve.  
+			<br /><br />
+			<div class="sharethis-inline-share-buttons"></div>
+			<br />
+			Do takrat objavljamo zgolj uradne podatke o številu okuženih.
+			</p>
+		  </div>
+	  
+		  <div class="flex text-center justify-center w-full md:w-2/5">
+        <div class="flex flex-col">
+          <div class="text-2xl mb-3">
+          <span class="font-medium">Zbrali smo</span>
+          <br />
+          <span id="zbrali-smo-num">100000</span> / 200.000
+          </div>
+          <div>
+          <div class="c100 p50 big green inline-block">
+            <span id="zbrali-smo-proc">50%</span>
+            <div class="slice">
+            <div class="bar"></div>
+            <div class="fill"></div>
+            </div>
+          </div>
+          </div>
+        </div>
+		  </div>
+    </div>
+
+    <div class="w-full">
+      <h1 class="text-2xl mb-3 font-medium">
+        Uradni podatki
+      </h1>
+      <div id="chart" ></div>
+    </div>
+  
+    </form>
+  </div>
+
+</div>
+
+<hr>
+
+
+	<!-- ZEMLJEVID -->
+	<div class="bg-white-300 pt-12 pb-12">
+		<div class="mx-auto pt-12 pb-12 px-6 container">
+				<h1 class="font-mono text-4xl font-bold text-center mb-12">KDAJ NAKUPOVAT</h1>
+				<div class="w-full md:w-3/5 mb-6 md:mb-0">
+					<p>Uporaba zemljevida je zelo preprosta. S spodnjim drsnikom se lahko pomikamo po časovnici za nekaj dni naprej. S pomočjo tega lahko opazujemo koliku ljudi se bo napotilo v trgovino ob dani uri.
+					<br /><br />
+					<p>Če pa želimo dodati svoj obisk trgovine v sistem se preprosto z drsnikom premaknemo na željen čas, na zemljevidu poiščemo trgovino, ki jo bomo obiskali in kliknemo nanjo.</p>  
+					<span class="font-medium" >Če željene lokacije ni na zemljevidu, lahko to dodamo ročno z gumbom "Dodaj"</span>
+					<br /><br />
+				  </div>
+				<map-widget style></map-widget>
+		</div>
+	</div>
+
+
+<hr>
+
+<!-- EKIPA -->
+<div class="bg-white pt-24 pb-12">
+  <h1 class="font-mono text-4xl font-bold text-center">EKIPA</h1>
+
+
+  <div id="container" class="mx-auto pt-12 pb-12 container px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Card 1 -->
+        <div class="bg-gray-200 px-6 py-8 rounded-lg text-center h-full">
+          <div class="mb-3">
+            <img
+              class="w-auto mx-auto rounded-full"
+              src="index_files/tomaz.jpg"
+              alt="Tomaž Gregorič"
+            />
+          </div>
+          <h2 class="text-xl font-medium text-gray-700">Tomaž Gregorič</h2>
+          <span class="font-bold block mb-5">Pobudnik in razvijalec</span>
+          <p>Magister računalništva in informatike, solastnik in direktor podjetij Spinaker d.o.o. in Zelena naložba d.o.o.. Skrbi za engine platforme (php in js, gostovanje, podatkovne baze, anonimizacija) in <a href="mailto:info@covid-19-stats.si"><u>odnose z javnostmi</u></a>.</p>
+        </div>
+
+      <!-- Card 2 -->
+        <div class="bg-gray-200 px-6 py-8 rounded-lg text-center h-full">
+          <div class="mb-3">
+            <img
+              class="w-auto mx-auto rounded-full"
+              src="index_files/saso.jpg"
+              alt="Sašo knez"
+            />
+          </div>
+          <h2 class="text-xl font-medium text-gray-700">Sašo Knez</h2>
+          <span class="font-bold block mb-5">Pobudnik in snovalec</span>
+          <p>Profesor fizike, preizkusni pilot ter soustanovitelj podjetij AFormX in Akademija 4. Skrbi za konceptualni razvoj platforme.</p>
+        </div>
+
+      <!-- Card 3 -->
+        <div class="bg-gray-200 px-6 py-8 rounded-lg text-center h-full">
+          <div class="mb-3">
+            <img
+              class="w-auto mx-auto rounded-full"
+              src="index_files/primoz.jpg"
+              alt="Primož Rome"
+            />
+          </div>
+          <h2 class="text-xl font-medium text-gray-700">Primož Rome</h2>
+          <span class="font-bold block mb-5">Pobudnik in razvijalec</span>
+          <p>Računalniški inženir, solastnik in vodja spletnega marketinga in LATAM regije podjetja Dewesoft d.o.o. in urednik portala Korona Zasavje. Skrbi za front-end strani.</p>
+        </div>
+
+      <!-- Card 4 -->
+        <div class="bg-gray-200 px-6 py-8 rounded-lg text-center h-full">
+          <div class="mb-3">
+            <img
+              class="w-auto mx-auto rounded-full"
+              src="index_files/rok.jpg"
+              alt="Rok Vetršek"
+            />
+          </div>
+          <h2 class="text-xl font-medium text-gray-700">Rok Vetršek</h2>
+          <span class="font-bold block mb-5">Razvijalec</span>
+          <p>Inženir informatike, solastnik in vodja web oddelka podjetja Dewesoft d.o.o.. Skrbi za front-end strani.</p>
+        </div>
+
+      <!-- Card 5 -->
+        <div class="bg-gray-200 px-6 py-8 rounded-lg text-center h-full">
+          <div class="mb-3">
+            <img
+              class="w-auto mx-auto rounded-full"
+              src="index_files/mitja.jpg"
+              alt="Mitja Ličar"
+            />
+          </div>
+          <h2 class="text-xl font-medium text-gray-700">Mitja Ličar</h2>
+          <span class="font-bold block mb-5">Oblikovalec</span>
+          <p>Grafični oblikovalec in profesionalni forograf, art direktor v podjetju Dewesoft d.o.o.. Skrbi za grafično podobo strani.</p>
+        </div>
+
+      <!-- Card 6 -->
+        <div class="bg-gray-200 px-6 py-8 rounded-lg text-center h-full">
+          <div class="mb-3">
+            <img
+              class="w-auto mx-auto rounded-full"
+              src="index_files/tomi.jpg"
+              alt="Tomaž Praunseis"
+            />
+          </div>
+          <h2 class="text-xl font-medium text-gray-700">Tomaž Praunseis</h2>
+          <span class="font-bold block mb-5">Video produkcija</span>
+          <p>Skate master in video artist pri Jaganath produkcija. Skrbi za produkcijo video posnetkov.</p>
+        </div>
+
+    </div>
+  </div>
+</div>  
+
+<footer class="bg-gray-200 pt-12 pb-4">
+  <div class="w-full max-w-screen-xl mx-auto px-6">
+
+    <div class="">
+      <p class="font-bold">PRAVNO OBVESTILO</p> 
+      <p>Ne zbiramo osebnih podatkov, zbrane podatke torej hranimo anonimizirano, za zbrane podatke ne odgovarjamo in zbranih podatkov ne interpretiramo.</p>
+    </div>
+
+    <div class="mt-8">
+      <div class="container mx-auto">
+        <div class="">
+          <div class="flex items-center justify-between border-t py-4">
+            <div class="justify-start justify-between text-xs w-1/3 flex">
+              <div class="mr-4">
+                &copy; 2020 Ekipa COVID-19 Samoporočanje  
+              </div>
+            </div>
+            <div class="justify-end justify-between text-xs w-2/3 flex text-right">
+              <div class="ml-4 w-full">
+                Kontakt: 
+                <a href="mailto:info@covid-19-stats.si" class="no-underline hover:underline">info@covid-19-stats.si</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+</footer>
+      <!-- MAP INCLUDE -->
+	  <script src="./js/app.js"></script>
+      <!-- MAP INCLUDE -->
+</body>
+</html>

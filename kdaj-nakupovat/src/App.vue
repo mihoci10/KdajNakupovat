@@ -1,26 +1,9 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <h1 class="">Kdaj Nakupovat</h1>
-      </div>
-      <v-spacer></v-spacer>
-        <v-btn
-              color="error"
-              @click="addMarker">
-          Dodaj
-        </v-btn>
-    </v-app-bar>
-    <v-content>
       <Map/>
-      <v-bottom-sheet content-class="elevation-0" :persistent="true" value=true :hide-overlay="true">
-        <Slider/>
-      </v-bottom-sheet>
-    </v-content>
+       <v-card color="#f7f7f7">
+      <Slider/>
+    </v-card>
   </v-app>
 </template>
 
@@ -47,5 +30,5 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 </style>
